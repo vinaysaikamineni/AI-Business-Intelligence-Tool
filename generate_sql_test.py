@@ -6,7 +6,6 @@ from db_runner import run_query
 load_dotenv()
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
 def prompt_to_sql(nl_query):
     prompt = f"""
 You are a helpful assistant that converts natural language into SQL queries.
