@@ -4,34 +4,21 @@ import os
 def run_query(query):
     conn = psycopg2.connect(
         host="localhost",
-        database="chinook",  # Replace with your DB
-        user="postgres",           # Replace with your DB user
-        password="postgres",       # Replace with your DB password
+        database="chinook",   # Your database name
+        user="postgres",      # Your DB username
+        password="postgres",  # Your DB password
         port="5432"
     )
     cur = conn.cursor()
     cur.execute(query)
-    
-    # Fetch column names from cursor description
+
+    # Get column headers
     colnames = [desc[0] for desc in cur.description]
-    
-    # Fetch all rows
+
+    # Get rows as list of tuples
     rows = cur.fetchall()
 
-    # Close connection
     cur.close()
     conn.close()
 
-    # Convert to list of dicts
-    result = [dict(zip(colnames, row)) for row in rows]
-    return result
-
-
-# Test with static SQL
-if __name__ == "__main__":
-    test_sql = "SELECT FirstName, LastName FROM customer WHERE Country = 'Germany';"
-    headers, data = run_query(test_sql)
-    print("Results:")
-    print(headers)
-    for row in data:
-        print(row)
+    return colnames, rows  # ✅ Return 2-tuple
