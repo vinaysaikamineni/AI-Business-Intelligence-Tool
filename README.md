@@ -1,19 +1,19 @@
-# 🧠 AI-Powered SQL Assistant
+#  AI-Powered SQL Assistant
 
 This is an AI-driven SQL query assistant built using Streamlit, OpenAI, and PostgreSQL. It helps data analysts and engineers translate natural language questions into SQL queries, run them, and see results instantly.
 
 ---
 
-## 🚀 Features
+## Features
 
-- ✅ Natural language to SQL conversion using OpenAI
-- ✅ Streamlit web interface for interactive querying
-- ✅ Live query execution on a PostgreSQL database
-- ✅ Clean output formatting and error handling
+-  Natural language to SQL conversion using OpenAI
+-  Streamlit web interface for interactive querying
+-  Live query execution on a PostgreSQL database
+-  Clean output formatting and error handling
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - Python 3.11
 - Streamlit
@@ -24,7 +24,7 @@ This is an AI-driven SQL query assistant built using Streamlit, OpenAI, and Post
 
 ---
 
-## 🖥️ Setup Instructions
+##  Setup Instructions
 
 1. **Clone the repo**
    ```bash
