@@ -77,3 +77,4 @@ ENV/
 env.bak/
 venv.bak/
 .env_v1
+static_layout.css

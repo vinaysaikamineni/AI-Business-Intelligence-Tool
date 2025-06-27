@@ -15,25 +15,109 @@ st.set_page_config(
     page_title="AI SQL Assistant",
     page_icon="🧠",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"  # Start collapsed to prevent initial shift
 )
 
-# Custom CSS for better styling
+# Custom CSS for stable layout and better styling
 st.markdown("""
 <style>
+/* Prevent content shifting when sidebar opens/closes */
+.main .block-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-width: none;
+    transition: none !important;
+}
+
+/* Ensure main content area has consistent width */
+.stApp > div:first-child {
+    transition: none !important;
+}
+
+/* Sidebar styling */
+.css-1d391kg {
+    transition: margin-left 0.2s ease;
+}
+
+/* Main header styling */
 .main-header {
-    font-size: 3rem;
+    font-size: 2.5rem;
     background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem 0;
 }
+
+/* Stats box styling */
 .stats-box {
-    background-color: #f0f2f6;
-    padding: 1rem;
-    border-radius: 10px;
+    background: linear-gradient(135deg, #f0f2f6 0%, #e8ecf0 100%);
+    padding: 1.5rem;
+    border-radius: 12px;
     margin: 0.5rem 0;
+    border: 1px solid #e1e5e9;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Query input area */
+.query-input-container {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e1e5e9;
+    margin: 1rem 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* Results section */
+.results-section {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e1e5e9;
+    margin: 1rem 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* Sidebar content */
+.sidebar .sidebar-content {
+    padding: 1rem 0.5rem;
+}
+
+/* Fixed main content width to prevent shifting */
+.main-content-wrapper {
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Responsive design improvements */
+@media (max-width: 768px) {
+    .main-header {
+        font-size: 2rem;
+    }
+    
+    .stats-box, .query-input-container, .results-section {
+        padding: 1rem;
+        margin: 0.5rem 0;
+    }
+}
+
+/* Smooth transitions only for specific elements */
+.metric-container {
+    transition: all 0.3s ease;
+}
+
+/* Override Streamlit's default responsive behavior */
+.element-container {
+    width: 100% !important;
+}
+
+/* Ensure consistent spacing */
+.stColumns {
+    gap: 1rem;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -88,36 +172,57 @@ with st.sidebar:
             if "execution_time" in entry:
                 st.caption(f"Executed in {entry['execution_time']:.2f}s")
 
-# Main content area
-col1, col2 = st.columns([2, 1])
-
-with col2:
-    st.markdown('<div class="stats-box">', unsafe_allow_html=True)
-    st.metric("Total Queries", len(st.session_state.query_history))
-    if st.session_state.query_history:
-        avg_score = sum(entry.get('score', 0) for entry in st.session_state.query_history) / len(st.session_state.query_history)
-        st.metric("Avg Success Rate", f"{avg_score:.1%}")
+# Main content area with stable container
+with st.container():
+    st.markdown('<div class="main-content-wrapper">', unsafe_allow_html=True)
+    
+    # Fixed-width columns to prevent shifting
+    col1, col2 = st.columns([3, 1], gap="large")
+    
+    with col1:
+        st.markdown('<div class="query-input-container">', unsafe_allow_html=True)
+        
+        # Example queries
+        st.markdown("**💡 Example Questions:**")
+        examples = [
+            "Show me the top 5 customers by total spending",
+            "What are the most popular music genres?",
+            "List all tracks by AC/DC",
+            "Which employee has the most customers?"
+        ]
+        
+        selected_example = st.selectbox("Choose an example or type your own:", [""] + examples)
+        
+        # Main input
+        nl_query = st.text_area(
+            "Enter your data question:", 
+            value=selected_example if selected_example else "",
+            placeholder="e.g., Show me the top 10 best-selling tracks",
+            height=120,
+            key="main_query_input"
+        )
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown('<div class="stats-box">', unsafe_allow_html=True)
+        
+        # Statistics section
+        st.markdown("**📊 Statistics**")
+        st.metric("Total Queries", len(st.session_state.query_history))
+        
+        if st.session_state.query_history:
+            avg_score = sum(entry.get('score', 0) for entry in st.session_state.query_history) / len(st.session_state.query_history)
+            st.metric("Success Rate", f"{avg_score:.1%}")
+            
+            # Recent activity
+            if len(st.session_state.query_history) > 0:
+                last_query = st.session_state.query_history[-1]
+                st.metric("Last Query", f"{last_query.get('execution_time', 0):.2f}s")
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+    
     st.markdown('</div>', unsafe_allow_html=True)
-
-with col1:
-    # Example queries
-    st.markdown("**💡 Example Questions:**")
-    examples = [
-        "Show me the top 5 customers by total spending",
-        "What are the most popular music genres?",
-        "List all tracks by AC/DC",
-        "Which employee has the most customers?"
-    ]
-    
-    selected_example = st.selectbox("Choose an example or type your own:", [""] + examples)
-    
-    # Main input
-    nl_query = st.text_area(
-        "Enter your data question:", 
-        value=selected_example if selected_example else "",
-        placeholder="e.g., Show me the top 10 best-selling tracks",
-        height=100
-    )
 
 # Query execution
 if nl_query:
@@ -128,9 +233,15 @@ if nl_query:
             # Generate SQL using enhanced module
             sql = prompt_to_sql(nl_query)
             
-        # Display generated SQL
-        st.subheader("📝 Generated SQL Query")
-        st.code(sql, language="sql")
+        # Results container
+        with st.container():
+            st.markdown('<div class="results-section">', unsafe_allow_html=True)
+            
+            # Display generated SQL
+            st.subheader("📝 Generated SQL Query")
+            st.code(sql, language="sql")
+            
+            st.markdown('</div>', unsafe_allow_html=True)
         
         # Execute query
         with st.spinner("⚡ Executing query..."):
@@ -142,44 +253,50 @@ if nl_query:
                 if headers and rows:
                     df = pd.DataFrame(rows, columns=headers)
                     
-                    # Display results
-                    st.subheader("📊 Query Results")
-                    
-                    # Results summary
-                    col1, col2, col3 = st.columns(3)
-                    with col1:
-                        st.metric("Rows Returned", len(df))
-                    with col2:
-                        st.metric("Columns", len(df.columns))
-                    with col3:
-                        st.metric("Execution Time", f"{execution_time:.2f}s")
-                    
-                    # Data display with pagination
-                    if len(df) > 100:
-                        st.warning(f"Large result set ({len(df)} rows). Showing first 100 rows.")
-                        st.dataframe(df.head(100), use_container_width=True)
-                    else:
-                        st.dataframe(df, use_container_width=True)
-                    
-                    # Download options
-                    with st.expander("📥 Download Options"):
-                        col1, col2 = st.columns(2)
+                    # Results container
+                    with st.container():
+                        st.markdown('<div class="results-section">', unsafe_allow_html=True)
+                        
+                        # Display results
+                        st.subheader("📊 Query Results")
+                        
+                        # Results summary
+                        col1, col2, col3 = st.columns(3)
                         with col1:
-                            csv = df.to_csv(index=False)
-                            st.download_button(
-                                "📄 Download as CSV", 
-                                data=csv, 
-                                file_name=f"query_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv", 
-                                mime="text/csv"
-                            )
+                            st.metric("Rows Returned", len(df))
                         with col2:
-                            json_data = df.to_json(orient='records', indent=2)
-                            st.download_button(
-                                "📋 Download as JSON", 
-                                data=json_data, 
-                                file_name=f"query_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json", 
-                                mime="application/json"
-                            )
+                            st.metric("Columns", len(df.columns))
+                        with col3:
+                            st.metric("Execution Time", f"{execution_time:.2f}s")
+                        
+                        # Data display with pagination
+                        if len(df) > 100:
+                            st.warning(f"Large result set ({len(df)} rows). Showing first 100 rows.")
+                            st.dataframe(df.head(100), use_container_width=True)
+                        else:
+                            st.dataframe(df, use_container_width=True)
+                        
+                        # Download options
+                        with st.expander("📥 Download Options"):
+                            col1, col2 = st.columns(2)
+                            with col1:
+                                csv = df.to_csv(index=False)
+                                st.download_button(
+                                    "📄 Download as CSV", 
+                                    data=csv, 
+                                    file_name=f"query_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv", 
+                                    mime="text/csv"
+                                )
+                            with col2:
+                                json_data = df.to_json(orient='records', indent=2)
+                                st.download_button(
+                                    "📋 Download as JSON", 
+                                    data=json_data, 
+                                    file_name=f"query_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json", 
+                                    mime="application/json"
+                                )
+                        
+                        st.markdown('</div>', unsafe_allow_html=True)
                     
                     # Store successful query in history
                     st.session_state.query_history.append({
