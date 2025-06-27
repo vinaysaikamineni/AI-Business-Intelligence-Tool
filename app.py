@@ -46,7 +46,7 @@ st.markdown("""
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
     padding: 0.5rem 0;
 }
 
@@ -87,10 +87,21 @@ st.markdown("""
 
 /* Fixed main content width to prevent shifting */
 .main-content-wrapper {
-    min-height: 100vh;
     width: 100%;
     margin: 0;
     padding: 0;
+}
+
+/* Compact header section */
+.header-section {
+    margin-bottom: 1rem;
+    padding-bottom: 0;
+}
+
+/* Subtitle spacing */
+.subtitle {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
 }
 
 /* Responsive design improvements */
@@ -129,8 +140,10 @@ if "db_connected" not in st.session_state:
     st.session_state.db_connected = None
 
 # Header
+st.markdown('<div class="header-section">', unsafe_allow_html=True)
 st.markdown('<h1 class="main-header">🧠 AI-Powered SQL Assistant</h1>', unsafe_allow_html=True)
-st.markdown("### Transform natural language into SQL queries and get instant insights from the Chinook database")
+st.markdown('<h3 class="subtitle">Transform natural language into SQL queries and get instant insights from the Chinook database</h3>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Sidebar setup
 with st.sidebar:
@@ -202,6 +215,14 @@ with st.container():
             key="main_query_input"
         )
         
+        # Execute button
+        execute_query = st.button(
+            "🚀 Execute Query", 
+            type="primary", 
+            use_container_width=True,
+            disabled=not nl_query.strip()
+        )
+        
         st.markdown('</div>', unsafe_allow_html=True)
     
     with col2:
@@ -225,7 +246,7 @@ with st.container():
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Query execution
-if nl_query:
+if execute_query and nl_query:
     try:
         start_time = datetime.now()
         

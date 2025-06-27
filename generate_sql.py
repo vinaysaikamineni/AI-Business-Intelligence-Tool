@@ -33,6 +33,12 @@ IMPORTANT RULES:
 7. Use lowercase for SQL keywords (select, from, where, etc.)
 8. Always use proper table aliases for complex queries
 
+CRITICAL DISTINCTIONS:
+- artist.name = Band/Artist name (e.g., "AC/DC", "Queen", "Beatles")
+- track.composer = Individual songwriter names (e.g., "Angus Young, Malcolm Young")
+- When users ask for tracks "by [artist]", use artist.name, NOT track.composer
+- When users ask for tracks "composed by [person]", use track.composer
+
 Common relationships:
 - customer.customer_id → invoice.customer_id
 - invoice.invoice_id → invoice_line.invoice_id
