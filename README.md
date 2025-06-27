@@ -1,13 +1,13 @@
-# 🧠 AI-Powered SQL Assistant
+# 📊 AI-Powered Business Intelligence Tool
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Streamlit](https://img.shields.io/badge/streamlit-1.46.0-red.svg)](https://streamlit.io/)
 [![OpenAI](https://img.shields.io/badge/openai-1.30.1-green.svg)](https://openai.com/)
 [![PostgreSQL](https://img.shields.io/badge/postgresql-supported-blue.svg)](https://www.postgresql.org/)
 
-An intelligent SQL query assistant that transforms natural language questions into SQL queries and executes them against your PostgreSQL database. Built with enterprise-grade security, comprehensive error handling, and a beautiful Streamlit interface.
+An intelligent business intelligence tool that transforms natural language questions into SQL queries and delivers instant business insights. Built with enterprise-grade security, comprehensive error handling, and a beautiful Streamlit interface for data analysis and reporting.
 
-![Demo Screenshot](https://via.placeholder.com/800x400/667eea/ffffff?text=AI+SQL+Assistant+Demo)
+![Demo Screenshot](https://via.placeholder.com/800x400/667eea/ffffff?text=AI+Business+Intelligence+Tool)
 
 ## ✨ Features
 

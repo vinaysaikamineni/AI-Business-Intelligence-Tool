@@ -12,8 +12,8 @@ logger = logging.getLogger(__name__)
 
 # Streamlit configuration
 st.set_page_config(
-    page_title="AI SQL Assistant",
-    page_icon="🧠",
+    page_title="AI-Powered Business Intelligence Tool",
+    page_icon="📊",
     layout="wide",
     initial_sidebar_state="collapsed"  # Start collapsed to prevent initial shift
 )
@@ -141,8 +141,8 @@ if "db_connected" not in st.session_state:
 
 # Header
 st.markdown('<div class="header-section">', unsafe_allow_html=True)
-st.markdown('<h1 class="main-header">🧠 AI-Powered SQL Assistant</h1>', unsafe_allow_html=True)
-st.markdown('<h3 class="subtitle">Transform natural language into SQL queries and get instant insights from the Chinook database</h3>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">📊 AI-Powered Business Intelligence Tool</h1>', unsafe_allow_html=True)
+st.markdown('<h3 class="subtitle">Transform natural language into SQL queries and get instant business insights</h3>', unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Sidebar setup
@@ -361,7 +361,7 @@ if execute_query and nl_query:
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #666;'>
-    <p>🎵 Powered by OpenAI GPT • Built with Streamlit • Data from Chinook Database</p>
-    <p>💡 Tip: Try asking about customers, invoices, tracks, artists, or employees!</p>
+    <p>🤖 Powered by OpenAI GPT • Built with Streamlit • PostgreSQL Database</p>
+    <p>💡 Tip: Ask about sales trends, customer analytics, revenue insights, or performance metrics!</p>
 </div>
 """, unsafe_allow_html=True)
