@@ -24,6 +24,13 @@ An intelligent business intelligence tool that transforms natural language quest
 - **Query History**: Track and replay previous queries
 - **Export Options**: Download results as CSV or JSON
 - **Performance Metrics**: Execution time and result statistics
+- **📊 Statistical Analysis Suite**: Comprehensive data analysis capabilities
+  - Descriptive Statistics with distribution analysis
+  - Correlation Analysis (Pearson & Spearman)
+  - Regression Analysis with significance testing
+  - Customer Segmentation using K-means clustering
+  - Anomaly Detection with Isolation Forest
+  - AI-Generated Business Insights
 
 ### 🛠️ **Developer Experience**
 - **Comprehensive Testing**: Full test suite with pytest
